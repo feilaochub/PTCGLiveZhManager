@@ -2,66 +2,68 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <AssemblyVersion>0.2.11.0</AssemblyVersion>
-    <FileVersion>0.2.11</FileVersion>
+    <AssemblyVersion>1.43.0</AssemblyVersion>
+    <FileVersion>1.43.0</FileVersion>
     <Version>$(FileVersion)</Version>
+    <BepInExDir Condition="'$(BepInExDir)' == ''">C:/BepInEx/core</BepInExDir>
+    <GameManagedDir Condition="'$(GameManagedDir)' == ''">$(LOCALAPPDATA)/omukade/rainier-shared/rainier-client</GameManagedDir>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath>C:\BepInEx\core\0Harmony.dll</HintPath>
+      <HintPath>$(BepInExDir)/0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx">
-      <HintPath>C:\BepInEx\core\BepInEx.dll</HintPath>
+      <HintPath>$(BepInExDir)/BepInEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CardDatabase.DataAccess">
-      <HintPath>$(LOCALAPPDATA)\omukade\rainier-shared\rainier-client\CardDatabase.DataAccess.dll</HintPath>
+      <HintPath>$(GameManagedDir)/CardDatabase.DataAccess.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="SharedLogicUtils">
-      <HintPath>$(LOCALAPPDATA)\omukade\rainier-shared\rainier-client\SharedLogicUtils.dll</HintPath>
+      <HintPath>$(GameManagedDir)/SharedLogicUtils.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="TPCI.RainierClient">
-      <HintPath>$(LOCALAPPDATA)\omukade\rainier-shared\rainier-client\TPCI.RainierClient.dll</HintPath>
+      <HintPath>$(GameManagedDir)/TPCI.RainierClient.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="TPCIAssetBundleSystem">
-      <HintPath>$(LOCALAPPDATA)\omukade\rainier-shared\rainier-client\TPCIAssetBundleSystem.dll</HintPath>
+      <HintPath>$(GameManagedDir)/TPCIAssetBundleSystem.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="TPCIBuildtoolsRuntime">
-      <HintPath>$(LOCALAPPDATA)\omukade\rainier-shared\rainier-client\TPCIBuildtoolsRuntime.dll</HintPath>
+      <HintPath>$(GameManagedDir)/TPCIBuildtoolsRuntime.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="TPCICardShaders">
-      <HintPath>$(LOCALAPPDATA)\omukade\rainier-shared\rainier-client\TPCICardShaders.dll</HintPath>
+      <HintPath>$(GameManagedDir)/TPCICardShaders.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="TPCILocalization">
-      <HintPath>$(LOCALAPPDATA)\omukade\rainier-shared\rainier-client\TPCILocalization.dll</HintPath>
+      <HintPath>$(GameManagedDir)/TPCILocalization.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.TextMeshPro">
-      <HintPath>$(LOCALAPPDATA)\omukade\rainier-shared\rainier-client\Unity.TextMeshPro.dll</HintPath>
+      <HintPath>$(GameManagedDir)/Unity.TextMeshPro.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>$(LOCALAPPDATA)\omukade\rainier-shared\rainier-client\UnityEngine.dll</HintPath>
+      <HintPath>$(GameManagedDir)/UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AssetBundleModule">
-      <HintPath>$(LOCALAPPDATA)\omukade\rainier-shared\rainier-client\UnityEngine.AssetBundleModule.dll</HintPath>
+      <HintPath>$(GameManagedDir)/UnityEngine.AssetBundleModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>$(LOCALAPPDATA)\omukade\rainier-shared\rainier-client\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>$(GameManagedDir)/UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>$(LOCALAPPDATA)\omukade\rainier-shared\rainier-client\UnityEngine.UI.dll</HintPath>
+      <HintPath>$(GameManagedDir)/UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>

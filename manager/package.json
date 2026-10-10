@@ -1,12 +1,12 @@
 {
-  "name": "ptcgl-zh-mod-manager",
-  "productName": "PTCGL 中文化模组管理器",
-  "version": "2.0.9",
-  "description": "PTCGL 中文化模组管理器",
+  "name": "ptcglivezhmanager",
+  "productName": "PTCGLiveZhManager",
+  "version": "1.43.0",
+  "description": "PTCGLiveZhManager：PTCGL简体中文汉化",
   "main": ".vite/main/main.js",
   "type": "module",
-  "homepage": "https://github.com/Hill-98/ptcg-live-zh-mod",
-  "repository": "github:Hill-98/ptcg-live-zh-mod",
+  "homepage": "https://github.com/feilaochub/PTCGLiveZhManager",
+  "repository": "github:feilaochub/PTCGLiveZhManager",
   "author": {
     "name": "Zhong Lufan",
     "email": "lufanzhong@gmail.com"
@@ -46,5 +46,11 @@
   },
   "volta": {
     "node": "24.14.1"
-  }
+  },
+  "contributors": [
+    {
+      "name": "feilao",
+      "email": "y371430933@163.com"
+    }
+  ]
 }

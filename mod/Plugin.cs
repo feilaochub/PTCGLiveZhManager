@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PTCGLiveZhMod
 {
-    [BepInPlugin("c04dfa3f-14f5-40b8-9f63-1d2d13b29bb3", "ptcg-live-zh-mod", "0.2.11")]
+    [BepInPlugin("c04dfa3f-14f5-40b8-9f63-1d2d13b29bb3", "PTCGLiveZhManager", "1.43.0")]
     public class Plugin : BaseUnityPlugin
     {
         public static string BaseDirectory { get { return Path.GetDirectoryName(Instance.Info.Location); } }
@@ -71,18 +71,36 @@ namespace PTCGLiveZhMod
             LoadLocFile(Path.Combine(DatabasesDirectory, "names.txt"), namesDatabase);
             LoadLocFile(untranslatedTextFile, untranslatedTextTable);
 
+            Harmony assemblyNamePatcher = null;
             try
             {
-                var asmNamePather = Harmony.CreateAndPatchAll(typeof(AssemblyNamePatcher));
-                Harmony.CreateAndPatchAll(typeof(AssetBundlePatcher));
-                Harmony.CreateAndPatchAll(typeof(CardDatabasePatcher));
-                Harmony.CreateAndPatchAll(typeof(LocalizationPatcher));
-                Harmony.CreateAndPatchAll(typeof(TextMeshProPatcher));
-                asmNamePather.UnpatchSelf();
+                assemblyNamePatcher = Harmony.CreateAndPatchAll(typeof(AssemblyNamePatcher));
+                ApplyPatch(typeof(AssetBundlePatcher));
+                ApplyPatch(typeof(CardDatabasePatcher));
+                ApplyPatch(typeof(LocalizationPatcher));
+                ApplyPatch(typeof(TextMeshProPatcher));
+                ApplyPatch(typeof(AbilityBadgePatcher));
+                ApplyPatch(typeof(AbilityBadgeEnablePatcher));
             }
             catch (Exception ex)
             {
                 Logger.LogError(ex);
+            }
+            finally
+            {
+                assemblyNamePatcher?.UnpatchSelf();
+            }
+        }
+
+        private static void ApplyPatch(Type patchType)
+        {
+            try
+            {
+                Harmony.CreateAndPatchAll(patchType);
+            }
+            catch (Exception ex)
+            {
+                LoggerInstance.LogError($"Failed to apply {patchType.Name}: {ex}");
             }
         }
 
@@ -133,7 +151,10 @@ namespace PTCGLiveZhMod
             {
                 return false;
             }
-            return locTextTable.TryGetValue(key, out text);
+            // Keep exact IDs (including intentional variants), then mirror the
+            // game's lowercase lookup for mixed-case shop product IDs.
+            return locTextTable.TryGetValue(key, out text)
+                || locTextTable.TryGetValue(key.ToLowerInvariant(), out text);
         }
 
         public static void LocCard(DataRow row)
@@ -199,7 +220,11 @@ namespace PTCGLiveZhMod
                         value += line;
                     }
                     value += "\n";
-
+                }
+                // Accept the final record even when the file has no trailing marker.
+                if (!string.IsNullOrWhiteSpace(key) && !string.IsNullOrWhiteSpace(value))
+                {
+                    dict[key] = value.Trim();
                 }
             }
             catch (Exception ex)

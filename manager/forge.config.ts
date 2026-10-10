@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto'
 import { existsSync as exists } from 'node:fs'
-import { appendFile, cp, mkdir, readdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
+import { cp, mkdir, readdir, readFile, rename, rm, writeFile } from 'node:fs/promises'
 import { join, parse } from 'node:path'
 import type { ForgeConfig } from '@electron-forge/shared-types'
 import { FuseV1Options, FuseVersion } from '@electron/fuses'
@@ -31,7 +31,7 @@ export default {
       unpack: isDarwin ? undefined : '**/bin/**',
     },
     appBundleId: pkg.name,
-    appCopyright: 'Copyright (c) 2024-2025 Hill-98@GitHub',
+    appCopyright: 'Copyright (c) 2024-2025 Hill-98; 2026 feilao',
     appVersion: pkg.version,
     executableName: pkg.name,
     icon: join(_dirname, 'resources/icons/app'),
@@ -102,26 +102,29 @@ export default {
         await cp(join(_dirname, '../BepInExOSXLoader'), join(RESOURCES_BUNDLE_DIR, 'BepInExOSXLoader'), { recursive: true })
       }
       const modDir = join(RESOURCES_BUNDLE_DIR, 'mod')
-      if (!exists(modDir)) {
-        await mkdir(modDir)
+      // Rebuild generated resources so every package includes the latest translations.
+      {
+        await rm(modDir, { recursive: true, force: true })
+        await mkdir(modDir, { recursive: true })
         await mkdir(join(modDir, 'databases'))
         await mkdir(join(modDir, 'fonts'))
         await mkdir(join(modDir, 'text'))
-        await cp(join(_dirname, '../dist/PTCGLiveZhMod.dll'), join(modDir, 'PTCGLiveZhMod.dll'))
+        await cp(join(_dirname, '../work/dist/PTCGLiveZhMod.dll'), join(modDir, 'PTCGLiveZhMod.dll'))
         await cp(join(_dirname, `../fonts/TextMeshPro_font.${isDarwin ? 'osx' : 'windows'}`), join(modDir, 'fonts/TextMeshPro_font'))
         const files = [
           ...await readdir(join(_dirname, '../databases_zh-CN'), { withFileTypes: true }),
           ...await readdir(join(_dirname, '../text_zh-CN'), { withFileTypes: true }),
         ]
-        for (const file of files) {
+        for (const file of files.filter((file) => file.isFile() && file.name.endsWith('.json'))) {
           const fullPath = join(file.parentPath, file.name)
           const path = parse(fullPath)
           const out = join(modDir, file.parentPath.includes('databases') ? 'databases' : 'text', `${path.name}.txt`)
           const map = JSON.parse(await readFile(fullPath, { encoding: 'utf8' }))
-          for (const key in map) {
-            const value = map[key].trimEnd()
-            await appendFile(out, `|${key}:${value}\n`, { encoding: 'utf8' })
-          }
+          const content = Object.entries(map)
+            .filter(([, value]) => String(value).trim().length > 0)
+            .map(([key, value]) => `|${key}:${String(value).trimEnd()}\n`)
+            .join('') + '|\n'
+          await writeFile(out, content, { encoding: 'utf8' })
         }
       }
 

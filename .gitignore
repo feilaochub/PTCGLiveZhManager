@@ -140,3 +140,21 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# Local client analysis, logs, downloaded binaries and release output
+/work/
+/releases/
+
+# Local development notes
+/Develop.MD
+/PUBLISH_REVIEW.md
+
+# Local backups, reports and Python caches
+/backups/
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db
+
+# Legacy hardpatch binaries are local build inputs, not release resources
+/BepInExOSXLoader/*.dll

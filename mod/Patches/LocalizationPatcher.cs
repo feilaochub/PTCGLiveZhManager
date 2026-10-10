@@ -82,7 +82,7 @@ namespace PTCGLiveZhMod.Patches
         [HarmonyPostfix]
         static void GameVersionInfo_GetGameVersionPostfix(ref string __result)
         {
-            __result = __result + "\n" + "中文化模组由 Hill-98 (小山) 制作";
+            __result = __result + "\n" + "PTCGLiveZhManager 由 feilao 完善，基于 Hill-98 (小山) 原项目；使用 MiSans 字体";
             if (!string.IsNullOrEmpty(Plugin.AssetsProvider))
             {
                 __result = __result + $" & 中文化卡牌图片资源由 {Plugin.AssetsProvider} 提供";
